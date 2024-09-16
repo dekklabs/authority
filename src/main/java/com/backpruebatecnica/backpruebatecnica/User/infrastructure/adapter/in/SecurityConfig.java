@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/login", "/api/v1/user/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/activity").authenticated()
                         .requestMatchers(HttpMethod.POST, "/grade").authenticated()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
