@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  springboot-app:
+    build: .
+    container_name: springbootapp
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/${USER_NAME_DB}
+      SPRING_DATASOURCE_USERNAME: ${USER_USER}
+      SPRING_DATASOURCE_PASSWORD: ${USER_PASSWORD}
+    env_file:
+      - .env
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres:15
+    container_name: mochidb
+    environment:
+      POSTGRES_DB: ${USER_NAME_DB}
+      POSTGRES_USER: ${USER_USER}
+      POSTGRES_PASSWORD: ${USER_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  # react-app:
+  #   build:
+  #     context: ./app
+  #     dockerfile: Dockerfile
+  #   container_name: reactapp
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - springboot-app
+  #   volumes:
+  #     - ./app:/app
+
+volumes:
+  postgres-data:
